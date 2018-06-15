@@ -12,6 +12,7 @@ Script Usage:
 Input
     The input CLI Configuration to the script can be given in a file or  
     can be given interactively through the console. 
+    The CLI Config given in a file should also contain "commit".
     For interactive mode, remove the "--clifile" argument.
 
     The argument "models" takes either "native" or "openconfig" as its value.

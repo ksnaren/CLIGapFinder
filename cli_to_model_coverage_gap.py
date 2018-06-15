@@ -103,10 +103,8 @@ def initialize():
         print("\nncclient library cannot be imported. Please check the path")
         sys.exit()
     
-    if(len(models_type)==0):
+    if(len(models_type)==0 or (models_type.find('native')==-1 and models_type.find('openconfig')==-1)):
         models_type="native"
-    elif(models_type.find('native')!=-1 and models_type.find('openconfig')!=-1):
-        models_type="openconfig"
     
     if(interactive_cli):
         cli_commands_interactive=""
@@ -157,6 +155,7 @@ def netconf_config():
        model_only="cisco.com"
     elif(models_type.find("openconfig")!=-1):
         model_only="openconfig.net"
+        
     for key in bc_keys:
         if(key not in b_keys):
             if(key.find(model_only) != -1):
