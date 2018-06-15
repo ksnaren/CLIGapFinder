@@ -1,12 +1,12 @@
 '''
 ------------------------------------------------------------------
-CLIYangValidation 
+CLIGapFinder - cli_to_model_coverage_gap.py 
 
- May 2017, Shyam Naren Kandala
+ June 2018, Shyam Naren Kandala
  
- Copyright (c) 2017 by Cisco Systems, Inc.
+ Copyright (c) 2018 by Cisco Systems, Inc.
  All rights reserved.
- ------------------------------------------------------------------
+------------------------------------------------------------------
  '''
 import sys,getopt
 import telnetlib
@@ -25,9 +25,9 @@ class OrderedSet(collections.Set):
     def __iter__(self):
         return iter(self.d)
 
-NCCLIENT_PATH="/ws/shkandal-sjc/python_lib/ncclient"
-sys.path.append(NCCLIENT_PATH)
-from ncclient import manager
+#NCCLIENT_PATH="/ws/shkandal-sjc/python_lib/ncclient"
+#sys.path.append(NCCLIENT_PATH)
+#from ncclient import manager
 
 EDIT_CONFIG_HEADER = """<rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" >
 <edit-config>
@@ -43,14 +43,15 @@ EDIT_CONFIG_FOOTER = """
 ##"""
 
 def initialize():
-    global hostname, ssh_port, telnet_port, cli_config_file, log_file, edit_config_file, netconf_summary, sun_user, sun_password,interactive_cli, cli_commands_interactive, models_type 
-    hostname=telnet_port=ssh_port=sun_user=sun_password=models_type=""
+    global hostname, ssh_port, telnet_port, cli_config_file, log_file, edit_config_file, netconf_summary, sun_user, sun_password,interactive_cli, cli_commands_interactive, models_type
+    global manager 
+    hostname=telnet_port=ssh_port=sun_user=sun_password=models_type=ncclient_path=""
     interactive_cli=1
     input_error_string=""" --host [<agent address>] --netconfport [<ssh port>] --telnetport [<telnet port>] --clifile [<cli config file>] --username [<user name>] --password [<password>] 
---models[<native | openconfig>]"""
+--models [<native | openconfig>] --ncclient_path [<Path to ncclient library>]"""
     
     try:
-        opts,args = getopt.getopt(sys.argv[1:],"",["host=","netconfport=","telnetport=","clifile=","username=","password=","models="])
+        opts,args = getopt.getopt(sys.argv[1:],"",["host=","netconfport=","telnetport=","clifile=","username=","password=","models=", "ncclient_path="])
     except getopt.GetoptError:
         print ("\nUsage: "+sys.argv[0]+input_error_string+"\n")
         sys.exit()
@@ -80,12 +81,14 @@ def initialize():
             sun_password = arg
         elif opt in ("--models"):
             models_type = arg
+        elif opt in ("--ncclient_path"):
+            ncclient_path = arg
         else:
             print ("\nUsage: "+sys.argv[0]+input_error_string+"\n") 
             sys.exit()
     log_file=open("logs.txt","w")
-    edit_config_file=open("edit_config.txt","w")
-    if(len(hostname)==0 or len(ssh_port)==0 or len(telnet_port)==0 or len(sun_user)==0 or len(sun_password)==0):
+    edit_config_file=open("model_log.xml","w")
+    if(len(hostname)==0 or len(ssh_port)==0 or len(telnet_port)==0 or len(sun_user)==0 or len(sun_password)==0 or len(ncclient_path)==0):
         print ("\nUsage: "+sys.argv[0]+input_error_string+"\n")
         sys.exit()
     netconf_summary={   
@@ -96,6 +99,13 @@ def initialize():
                      5:"5. NETCONF - Send EDIT_CONFIG and show running-config     : ",
                      6:"6. CLI- Rollback to Base Configuration                    : ",
                      7:"7. CLI NETCONF Configurations Match                       : ",}
+    
+    try:
+        sys.path.append(ncclient_path)
+        from ncclient import manager
+    except Exception,err:
+        print("\nncclient library cannot be imported. Please check the path")
+        sys.exit()
     
     if(len(models_type)==0):
         models_type="native"
@@ -315,7 +325,7 @@ def validation():
             print (result)
             log_file.write(result+"\n")
     print ("\n--------------------------------------------------------------------------------")
-    print ("Refer to edit_config.txt for request XML and logs.txt for detailed information.\n")  
+    print ("Refer to model_log.xml for request XML and logs.txt for detailed information.\n")  
 
 if __name__ == "__main__":
     initialize()

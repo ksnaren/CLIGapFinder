@@ -938,17 +938,17 @@
 ------------------------- Connected via Telnet to router to send CLI commands ----------------
 config
 interface GigabitEthernet 0/0/0/1
-   Time: Thu Jun 14 19:23:54 2018
+   Time: Fri Jun 15 13:54:11 2018
 ipv4 address 1.1.1.1 255.255.255.0
-   Time: Thu Jun 14 19:23:55 2018
+   Time: Fri Jun 15 13:54:12 2018
 interface GigabitEthernet 0/0/0/2
-   Time: Thu Jun 14 19:23:56 2018
+   Time: Fri Jun 15 13:54:13 2018
 ipv4 address 1.1.1.1 255.255.255.0
-   Time: Thu Jun 14 19:23:57 2018
+   Time: Fri Jun 15 13:54:14 2018
 hostname cisco
-   Time: Thu Jun 14 19:23:58 2018
+   Time: Fri Jun 15 13:54:15 2018
 commit
-   Time: Thu Jun 14 19:23:59 2018
+   Time: Fri Jun 15 13:54:16 2018
 ----------------------------------Sent show running-config------------------------------------
 ---------------------------------Received GET_CONFIG -----------------------------------------
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:ns0="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -2107,7 +2107,7 @@ Configuration successfully rolled back 1 commits.
 ----------------------------------------- CLI Reponse ---------------------------------------
 
 !! IOS XR Configuration version = 7.0.1.05I
-!! Last configuration change at Fri Jun 15 02:23:58 2018 by lab
+!! Last configuration change at Fri Jun 15 20:54:14 2018 by lab
 !
 hostname cisco
 telnet vrf default ipv4 server max-servers 10
@@ -2138,7 +2138,7 @@ end
 --------------------------------------- NetConf Reponse -------------------------------------
 
 !! IOS XR Configuration version = 7.0.1.05I
-!! Last configuration change at Fri Jun 15 02:24:06 2018 by lab
+!! Last configuration change at Fri Jun 15 20:54:21 2018 by lab
 !
 telnet vrf default ipv4 server max-servers 10
 username lab
