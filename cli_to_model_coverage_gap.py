@@ -25,10 +25,6 @@ class OrderedSet(collections.Set):
     def __iter__(self):
         return iter(self.d)
 
-#NCCLIENT_PATH="/ws/shkandal-sjc/python_lib/ncclient"
-#sys.path.append(NCCLIENT_PATH)
-#from ncclient import manager
-
 EDIT_CONFIG_HEADER = """<rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" >
 <edit-config>
  <target>

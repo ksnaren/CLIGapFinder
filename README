@@ -6,7 +6,8 @@ equivalent yang model(s) in either Cisco Native or Openconfig.
 Script Usage: 
 "python cli_to_model_coverage_gap.py --host [<host address>] --netconfport [<NetConf Port>] 
    --telnetport [<Telnet Port>] --clifile [<CLI Configuration File>] --username [<login username>]
-   --password [<loging password>]  --models [<native | openconfig>] --ncclient_path [<ncclient library path>]".
+   --password [<loging password>]  --models [<native | openconfig>] 
+   --ncclient_path [<ncclient library path>]".
 
 Input
     The input CLI Configuration to the script can be given in a file or  
@@ -28,7 +29,8 @@ Script Requirements:
         It can be cloned using "git clone https://github.com/ncclient/ncclient". 
         The path to the library needs to be sent as the "--ncclient_path" argument.
     
-    2. The router needs to have the basic configuration for script to work. Sample basic configuration is given below:                          
+    2. The router needs to have the basic configuration for script to work. 
+        Sample basic configuration is given below:                          
             telnet vrf default ipv4 server max-servers 10
             username lab
             group root-lr
