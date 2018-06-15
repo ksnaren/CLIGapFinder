@@ -1,0 +1,6 @@
+interface GigabitEthernet 0/0/0/1
+ipv4 address 1.1.1.1 255.255.255.0
+interface GigabitEthernet 0/0/0/2
+ipv4 address 1.1.1.1 255.255.255.0
+hostname cisco
+commit

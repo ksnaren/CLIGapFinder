@@ -1,1 +1,62 @@
 # CLIXMLGenerator
+
+This script helps in generating the NetConf request XML - either native model only or openconfig model only,for a set of CLI Configurations. 
+It also validates the show running-config response for CLI & NETCONF/YANG inputs.
+
+Working of the script can be categorized into 7 steps: 
+    1.The existing configuration on the router is retrieved using NetConf, 
+    2.CLI configurations are applied on the router using telnet and response of show running-config is stored, 
+    3.Configuration is again retrieved using NetConf,
+    4.Router is reverted to the original configuration,
+    5.NETCONF Request (which contains just the XML related to CLI configurations) is sent and response of show running-config is stored, 
+    6.Router is reverted to original configuration.
+    7.Response obtained in 2,5 are validated.
+       
+Script Usage: 
+"python cli-netconf-xml-generator-oc.py --host [<host address>] --netconfport [<NetConf Port>] --telnetport [<Telnet Port>] 
+   --clifile [<CLI Configuration File>] --username [<login username>] --password [<loging password>] --models [<native | openconfig>]".
+
+    The input CLI Configuration to the script can be given in a file or can be given interactively through the console. 
+    For interactive mode, remove the "--clifile" argument.
+
+    The argument "models" takes either "native" or "openconfig" as its value. 
+    "native" will make the request XML contain only data related to Cisco native models.
+    "openconfig" will make the request XML contain only data related to Openconfig models.
+    
+Output:  
+    The output of script is the request XML for CLI Configuration which is stored in file: edit_config.txt.
+    The status (PASS/FAIL) for the 7 steps described above is displayed. 
+    The Yang Models corresponding to the CLI configurations is displayed along with any missing configurations obtained in Step 7.  
+    Logs are logged to a file: log.txt.
+ 
+This script uses ncclient library downloaded form git. 
+It can be downloaded from https://github.com/ncclient/ncclient or cloned using "git clone https://github.com/ncclient/ncclient". 
+Update the variable 'NCCLIENT_PATH' with the path to downloaded ncclient library.
+ 
+The router needs to have the basic configuration for script to work. Sample basic configuration is given below:
+                             
+telnet vrf default ipv4 server max-servers 10
+username lab
+ group root-lr
+ group cisco-support
+ secret 5 $1$ETat$bPFwbn5eLFtW//ZHx7orp0
+!
+interface MgmtEth0/RP0/CPU0/0
+ ipv4 address dhcp
+!
+router static
+ address-family ipv4 unicast
+  0.0.0.0/0 MgmtEth0/RP0/CPU0/0 192.168.122.1
+ !
+!
+netconf-yang agent
+ ssh
+!
+ssh server netconf vrf default
+end
+
+
+The Folder 'Samples' Contain:
+    1. sample cli configuration.
+    2. Screenshots related to script execution.
+    3. Sample edit_config.txt and log.txt.
