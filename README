@@ -1,4 +1,4 @@
-# CLIXMLGenerator
+#CLIXMLGenerator
 
 This script helps in generating the NetConf request XML - either native model only or openconfig model only,for a set of CLI Configurations. 
 It also validates the show running-config response for CLI & NETCONF/YANG inputs.
