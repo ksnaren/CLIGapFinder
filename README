@@ -35,6 +35,9 @@ Output:
 
     File: model_log.xml contains the XML request related to the CLI config.
     File: uncovered_cli.txt contains the CLI which doesnt have equivalent yang.
+   
+Screen Recording:
+    https://youtu.be/vYIIfpeqNxs
     
 Working of the script: 
     1.Existing configuration on the router is retrieved using Netconf, 
@@ -46,3 +49,4 @@ Working of the script:
       is sent and response of show running-config is stored, 
     6.Router is reverted to original configuration,
     7.Response obtained in 2,5 is validated.
+    
