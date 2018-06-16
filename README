@@ -11,7 +11,7 @@ Requirements:
     2.Script requires a router to be connected.  
         Basic Config required on the router: telnet, management ip, netconf, ssh.
         Verify using "ssh username@ip.address -p <netconf port> -s netconf" for ipv4 router.
-                           "ssh -6 username@ip.address -p <netconf port> -s netconf" for ipv6 router.
+                  "ssh -6 username@ip.address -p <netconf port> -s netconf" for ipv6 router.
         Example: "ssh lab@1.1.1.1 -p 830 -s netconf"
       
 Script Usage: 
