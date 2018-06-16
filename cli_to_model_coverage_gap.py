@@ -1,18 +1,14 @@
-'''
-------------------------------------------------------------------
-CLIGapFinder - cli_to_model_coverage_gap.py 
-
- June 2018, Shyam Naren Kandala
- 
- Copyright (c) 2018 by Cisco Systems, Inc.
- All rights reserved.
-------------------------------------------------------------------
- '''
 import sys,getopt
 import telnetlib
 from socket import *
 import time
 
+try:
+    from ncclient import manager
+except Exception,err:
+    print("\nncclient library cannot be imported. Please install and try again")
+    sys.exit()
+           
 from collections import OrderedDict
 import collections
 class OrderedSet(collections.Set):
@@ -39,15 +35,15 @@ EDIT_CONFIG_FOOTER = """
 ##"""
 
 def initialize():
-    global hostname, ssh_port, telnet_port, cli_config_file, log_file, edit_config_file, netconf_summary, sun_user, sun_password,interactive_cli, cli_commands_interactive, models_type
-    global manager 
-    hostname=telnet_port=ssh_port=sun_user=sun_password=models_type=ncclient_path=""
+    global hostname, ssh_port, telnet_port, netconf_summary, sun_user, sun_password,interactive_cli, cli_commands_interactive, models_type 
+    global cli_config_file, log_file, edit_config_file, uncovered_cli_file
+    hostname=telnet_port=ssh_port=sun_user=sun_password=models_type=""
     interactive_cli=1
     input_error_string=""" --host [<agent address>] --netconfport [<ssh port>] --telnetport [<telnet port>] --clifile [<cli config file>] --username [<user name>] --password [<password>] 
---models [<native | openconfig>] --ncclient_path [<Path to ncclient library>]"""
+--models [<native | openconfig>] """
     
     try:
-        opts,args = getopt.getopt(sys.argv[1:],"",["host=","netconfport=","telnetport=","clifile=","username=","password=","models=", "ncclient_path="])
+        opts,args = getopt.getopt(sys.argv[1:],"",["host=","netconfport=","telnetport=","clifile=","username=","password=","models="])
     except getopt.GetoptError:
         print ("\nUsage: "+sys.argv[0]+input_error_string+"\n")
         sys.exit()
@@ -77,14 +73,13 @@ def initialize():
             sun_password = arg
         elif opt in ("--models"):
             models_type = arg
-        elif opt in ("--ncclient_path"):
-            ncclient_path = arg
         else:
             print ("\nUsage: "+sys.argv[0]+input_error_string+"\n") 
             sys.exit()
     log_file=open("logs.txt","w")
     edit_config_file=open("model_log.xml","w")
-    if(len(hostname)==0 or len(ssh_port)==0 or len(telnet_port)==0 or len(sun_user)==0 or len(sun_password)==0 or len(ncclient_path)==0):
+    uncovered_cli_file=open("uncovered_cli.txt","w")
+    if(len(hostname)==0 or len(ssh_port)==0 or len(telnet_port)==0 or len(sun_user)==0 or len(sun_password)==0):
         print ("\nUsage: "+sys.argv[0]+input_error_string+"\n")
         sys.exit()
     netconf_summary={   
@@ -95,14 +90,7 @@ def initialize():
                      5:"5. NETCONF - Send EDIT_CONFIG and show running-config     : ",
                      6:"6. CLI- Rollback to Base Configuration                    : ",
                      7:"7. CLI NETCONF Configurations Match                       : ",}
-    
-    try:
-        sys.path.append(ncclient_path)
-        from ncclient import manager
-    except Exception,err:
-        print("\nncclient library cannot be imported. Please check the path")
-        sys.exit()
-    
+       
     if(len(models_type)==0 or (models_type.find('native')==-1 and models_type.find('openconfig')==-1)):
         models_type="native"
     
@@ -179,10 +167,17 @@ def netconf_config():
         log_file.write(fn_name+"\nFailed to send the EDIT_CONFIG/COMMIT: "+str(err))
         if(model_only.find('openconfig.net')!=-1):
             if(len(request.splitlines())==2):
-                log_file.write(fn_name+"\nThere is no openconfig model request to capture the required configuration.")
+                log_file.write(fn_name+"\n\nThere is no openconfig request to capture the required configuration.")
+                summary(5,"FAIL")
+                print("There is no openconfig request to capture the required configuration.")
+                sys.exit()
             else:
-                log_file.write(fn_name+"\nThe openconfig request is not accepted by the system.")
+                log_file.write(fn_name+"\n\nThe openconfig request is not accepted by the system.")
+                summary(5,"FAIL")
+                print("The openconfig request is not accepted by the system.") 
+                sys.exit()
         summary(5,"FAIL")
+        sys.exit()
         
     log_file.write("\n----------------------------------Sent show running-config------------------------------------")
     net_conf_response=show_running_config(fn_name,"Show running config failed: ",5)   
@@ -292,7 +287,8 @@ def summary(index, value):
        
     if(value=="FAIL"):
         print ("\nRefer logs.txt for detailed information.\n")
-        sys.exit()
+        if(index!=5):
+            sys.exit()
 
 def validation():   
     log_file.write("\n\n---------------------Inside function: validation()-------------------------------------------")
@@ -306,21 +302,23 @@ def validation():
     status="PASS" if(len(result_set)==0) else "FAIL"
     print ("7. CLI NETCONF Configurations match                       : "+status+"\n")
     log_file.write("\n"+status+": Status of configurations match.\n")
-    log_file.write("\n----------------------------------------------- Yang Models --------------------------------\n")
-    print ("--------------------------------Yang Models-------------------------------------")
+    log_file.write("\n---------------------------------------------Yang Models for CLI------------------------------\n")
+    print ("----------------------------Yang Models for CLI---------------------------------")
     for diff_yang in diff_yang_models:
         model=diff_yang.split('"')[1]
         if(model!="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg" and model!="http://tail-f.com/ns/aaa/1.1"):
             print (model)
             log_file.write(model+"\n")          
     if(status=="FAIL"):
-        print ("\n------------------------Mismatched Configurations-------------------------------")
-        log_file.write("\n---------------------------------------Mismatched Configurations----------------------------------\n")
+        print ("\n-------------------------Uncovered Configurations-------------------------------")
+        log_file.write("\n----------------------------------------Uncovered Configurations----------------------------------\n")
+        uncovered_cli_file.write("Uncovered Configurations:"+"\n")
         for result in result_set:
             print (result)
             log_file.write(result+"\n")
+            uncovered_cli_file.write(result+"\n")
     print ("\n--------------------------------------------------------------------------------")
-    print ("Refer to model_log.xml for request XML and logs.txt for detailed information.\n")  
+    print ("Refer model_log.xml-request XML, uncovered_cli.txt-uncovered CLI and logs.txt-logs.\n")  
 
 if __name__ == "__main__":
     initialize()

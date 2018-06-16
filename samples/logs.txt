@@ -1,17 +1,7 @@
 -----------------------Inside function: netconf_config()-------------------------
 --------------------------------------Connected to NETCONF ----------------------------------
 ---------------------------------- Received GET_CONFIG-Base ------------------------------------
-<?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:ns0="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg">
-   <server>
-    <netconf-vrf-table>
-     <vrf>
-      <vrf-name>default</vrf-name>
-      <enable/>
-     </vrf>
-    </netconf-vrf-table>
-   </server>
-  </ssh>
+<?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
   <ip xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-tcp-cfg">
    <cinetd>
     <services>
@@ -30,30 +20,17 @@
     </services>
    </cinetd>
   </ip>
-  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg">
-   <agent>
-    <ssh>
-     <enable/>
-    </ssh>
-   </agent>
-  </netconf-yang>
-  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg">
-   <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg">
-    <username>
-     <ordering-index>0</ordering-index>
-     <name>lab</name>
-     <usergroup-under-usernames>
-      <usergroup-under-username>
-       <name>root-lr</name>
-      </usergroup-under-username>
-      <usergroup-under-username>
-       <name>cisco-support</name>
-      </usergroup-under-username>
-     </usergroup-under-usernames>
-     <secret>$1$ETat$bPFwbn5eLFtW//ZHx7orp0</secret>
-    </username>
-   </usernames>
-  </aaa>
+  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg">
+   <server>
+    <v2/>
+    <netconf-vrf-table>
+     <vrf>
+      <vrf-name>default</vrf-name>
+      <enable/>
+     </vrf>
+    </netconf-vrf-table>
+   </server>
+  </ssh>
   <router-static xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg">
    <default-vrf>
     <address-family>
@@ -78,6 +55,13 @@
     </address-family>
    </default-vrf>
   </router-static>
+  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg">
+   <agent>
+    <ssh>
+     <enable/>
+    </ssh>
+   </agent>
+  </netconf-yang>
   <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
    <interface-configuration>
     <active>act</active>
@@ -88,7 +72,39 @@
      </addresses>
     </ipv4-network>
    </interface-configuration>
+   <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/0</interface-name>
+    <shutdown/>
+   </interface-configuration>
+   <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/1</interface-name>
+    <shutdown/>
+   </interface-configuration>
+   <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/2</interface-name>
+    <shutdown/>
+   </interface-configuration>
   </interface-configurations>
+  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg">
+   <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg">
+    <username>
+     <ordering-index>0</ordering-index>
+     <name>lab</name>
+     <usergroup-under-usernames>
+      <usergroup-under-username>
+       <name>root-lr</name>
+      </usergroup-under-username>
+      <usergroup-under-username>
+       <name>cisco-support</name>
+      </usergroup-under-username>
+     </usergroup-under-usernames>
+     <secret>$1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1</secret>
+    </username>
+   </usernames>
+  </aaa>
   <aaa xmlns="http://tail-f.com/ns/aaa/1.1">
    <authentication>
     <users>
@@ -96,7 +112,7 @@
       <name>lab</name>
       <uid>9000</uid>
       <gid>100</gid>
-      <password>$1$ETat$bPFwbn5eLFtW//ZHx7orp0</password>
+      <password>$1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1</password>
       <ssh_keydir>/var/confd/homes/lab/.ssh</ssh_keydir>
       <homedir>/var/confd/homes/lab</homedir>
      </user>
@@ -922,6 +938,45 @@
      </subinterface>
     </subinterfaces>
    </interface>
+   <interface>
+    <name>GigabitEthernet0/0/0/0</name>
+    <config>
+     <name>GigabitEthernet0/0/0/0</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
+   <interface>
+    <name>GigabitEthernet0/0/0/1</name>
+    <config>
+     <name>GigabitEthernet0/0/0/1</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
+   <interface>
+    <name>GigabitEthernet0/0/0/2</name>
+    <config>
+     <name>GigabitEthernet0/0/0/2</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
   </interfaces>
   <lacp xmlns="http://openconfig.net/yang/lacp">
    <interfaces>
@@ -931,6 +986,24 @@
       <name>MgmtEth0/RP0/CPU0/0</name>
      </config>
     </interface>
+    <interface>
+     <name>GigabitEthernet0/0/0/0</name>
+     <config>
+      <name>GigabitEthernet0/0/0/0</name>
+     </config>
+    </interface>
+    <interface>
+     <name>GigabitEthernet0/0/0/1</name>
+     <config>
+      <name>GigabitEthernet0/0/0/1</name>
+     </config>
+    </interface>
+    <interface>
+     <name>GigabitEthernet0/0/0/2</name>
+     <config>
+      <name>GigabitEthernet0/0/0/2</name>
+     </config>
+    </interface>
    </interfaces>
   </lacp>
  </data>
@@ -938,30 +1011,20 @@
 ------------------------- Connected via Telnet to router to send CLI commands ----------------
 config
 interface GigabitEthernet 0/0/0/1
-   Time: Fri Jun 15 13:54:11 2018
+   Time: Fri Jun 15 18:33:39 2018
 ipv4 address 1.1.1.1 255.255.255.0
-   Time: Fri Jun 15 13:54:12 2018
+   Time: Fri Jun 15 18:33:40 2018
 interface GigabitEthernet 0/0/0/2
-   Time: Fri Jun 15 13:54:13 2018
+   Time: Fri Jun 15 18:33:41 2018
 ipv4 address 1.1.1.1 255.255.255.0
-   Time: Fri Jun 15 13:54:14 2018
+   Time: Fri Jun 15 18:33:42 2018
 hostname cisco
-   Time: Fri Jun 15 13:54:15 2018
+   Time: Fri Jun 15 18:33:43 2018
 commit
-   Time: Fri Jun 15 13:54:16 2018
+   Time: Fri Jun 15 18:33:44 2018
 ----------------------------------Sent show running-config------------------------------------
 ---------------------------------Received GET_CONFIG -----------------------------------------
-<?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:ns0="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg">
-   <server>
-    <netconf-vrf-table>
-     <vrf>
-      <vrf-name>default</vrf-name>
-      <enable/>
-     </vrf>
-    </netconf-vrf-table>
-   </server>
-  </ssh>
+<?xml version="1.0" encoding="UTF-8"?><data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
   <ip xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-tcp-cfg">
    <cinetd>
     <services>
@@ -980,33 +1043,20 @@ commit
     </services>
    </cinetd>
   </ip>
-  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg">
-   <agent>
-    <ssh>
-     <enable/>
-    </ssh>
-   </agent>
-  </netconf-yang>
+  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg">
+   <server>
+    <v2/>
+    <netconf-vrf-table>
+     <vrf>
+      <vrf-name>default</vrf-name>
+      <enable/>
+     </vrf>
+    </netconf-vrf-table>
+   </server>
+  </ssh>
   <host-names xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg">
    <host-name>cisco</host-name>
   </host-names>
-  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg">
-   <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg">
-    <username>
-     <ordering-index>0</ordering-index>
-     <name>lab</name>
-     <usergroup-under-usernames>
-      <usergroup-under-username>
-       <name>root-lr</name>
-      </usergroup-under-username>
-      <usergroup-under-username>
-       <name>cisco-support</name>
-      </usergroup-under-username>
-     </usergroup-under-usernames>
-     <secret>$1$ETat$bPFwbn5eLFtW//ZHx7orp0</secret>
-    </username>
-   </usernames>
-  </aaa>
   <router-static xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg">
    <default-vrf>
     <address-family>
@@ -1031,6 +1081,13 @@ commit
     </address-family>
    </default-vrf>
   </router-static>
+  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg">
+   <agent>
+    <ssh>
+     <enable/>
+    </ssh>
+   </agent>
+  </netconf-yang>
   <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
    <interface-configuration>
     <active>act</active>
@@ -1040,6 +1097,11 @@ commit
       <dhcp/>
      </addresses>
     </ipv4-network>
+   </interface-configuration>
+   <interface-configuration>
+    <active>act</active>
+    <interface-name>GigabitEthernet0/0/0/0</interface-name>
+    <shutdown/>
    </interface-configuration>
    <interface-configuration>
     <active>act</active>
@@ -1052,6 +1114,7 @@ commit
       </primary>
      </addresses>
     </ipv4-network>
+    <shutdown/>
    </interface-configuration>
    <interface-configuration>
     <active>act</active>
@@ -1064,8 +1127,26 @@ commit
       </primary>
      </addresses>
     </ipv4-network>
+    <shutdown/>
    </interface-configuration>
   </interface-configurations>
+  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg">
+   <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg">
+    <username>
+     <ordering-index>0</ordering-index>
+     <name>lab</name>
+     <usergroup-under-usernames>
+      <usergroup-under-username>
+       <name>root-lr</name>
+      </usergroup-under-username>
+      <usergroup-under-username>
+       <name>cisco-support</name>
+      </usergroup-under-username>
+     </usergroup-under-usernames>
+     <secret>$1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1</secret>
+    </username>
+   </usernames>
+  </aaa>
   <aaa xmlns="http://tail-f.com/ns/aaa/1.1">
    <authentication>
     <users>
@@ -1073,7 +1154,7 @@ commit
       <name>lab</name>
       <uid>9000</uid>
       <gid>100</gid>
-      <password>$1$ETat$bPFwbn5eLFtW//ZHx7orp0</password>
+      <password>$1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1</password>
       <ssh_keydir>/var/confd/homes/lab/.ssh</ssh_keydir>
       <homedir>/var/confd/homes/lab</homedir>
      </user>
@@ -1900,11 +1981,24 @@ commit
     </subinterfaces>
    </interface>
    <interface>
+    <name>GigabitEthernet0/0/0/0</name>
+    <config>
+     <name>GigabitEthernet0/0/0/0</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
+   <interface>
     <name>GigabitEthernet0/0/0/1</name>
     <config>
      <name>GigabitEthernet0/0/0/1</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -1933,7 +2027,7 @@ commit
     <config>
      <name>GigabitEthernet0/0/0/2</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -1967,6 +2061,12 @@ commit
      </config>
     </interface>
     <interface>
+     <name>GigabitEthernet0/0/0/0</name>
+     <config>
+      <name>GigabitEthernet0/0/0/0</name>
+     </config>
+    </interface>
+    <interface>
      <name>GigabitEthernet0/0/0/1</name>
      <config>
       <name>GigabitEthernet0/0/0/1</name>
@@ -1986,7 +2086,7 @@ commit
 
 Loaded Rollback Changes in 1 sec 
 Committing.
-5 items committed in 1 sec 
+5 items committed in 1 sec (4)items/sec
 Updating.
 Updated Commit database in 1 sec 
 Configuration successfully rolled back 1 commits.
@@ -2012,11 +2112,24 @@ Configuration successfully rolled back 1 commits.
     </subinterfaces>
    </interface>
    <interface>
+    <name>GigabitEthernet0/0/0/0</name>
+    <config>
+     <name>GigabitEthernet0/0/0/0</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
+   <interface>
     <name>GigabitEthernet0/0/0/1</name>
     <config>
      <name>GigabitEthernet0/0/0/1</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -2045,7 +2158,7 @@ Configuration successfully rolled back 1 commits.
     <config>
      <name>GigabitEthernet0/0/0/2</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -2070,35 +2183,13 @@ Configuration successfully rolled back 1 commits.
     </subinterfaces>
    </interface>
   </interfaces>
-  <lacp xmlns="http://openconfig.net/yang/lacp">
-   <interfaces>
-    <interface>
-     <name>MgmtEth0/RP0/CPU0/0</name>
-     <config>
-      <name>MgmtEth0/RP0/CPU0/0</name>
-     </config>
-    </interface>
-    <interface>
-     <name>GigabitEthernet0/0/0/1</name>
-     <config>
-      <name>GigabitEthernet0/0/0/1</name>
-     </config>
-    </interface>
-    <interface>
-     <name>GigabitEthernet0/0/0/2</name>
-     <config>
-      <name>GigabitEthernet0/0/0/2</name>
-     </config>
-    </interface>
-   </interfaces>
-  </lacp>
 </config>
 ----------------------------------Sent show running-config------------------------------------
 ------------------Configuration Rollback Message--------------------------
 
 Loaded Rollback Changes in 1 sec 
 Committing.
-5 items committed in 1 sec (4)items/sec
+9 items committed in 1 sec 
 Updating.
 Updated Commit database in 1 sec 
 Configuration successfully rolled back 1 commits.
@@ -2107,23 +2198,28 @@ Configuration successfully rolled back 1 commits.
 ----------------------------------------- CLI Reponse ---------------------------------------
 
 !! IOS XR Configuration version = 7.0.1.05I
-!! Last configuration change at Fri Jun 15 20:54:14 2018 by lab
+!! Last configuration change at Sat Jun 16 01:33:43 2018 by lab
 !
 hostname cisco
 telnet vrf default ipv4 server max-servers 10
 username lab
  group root-lr
  group cisco-support
- secret 5 $1$ETat$bPFwbn5eLFtW//ZHx7orp0
+ secret 5 $1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1
 !
 interface MgmtEth0/RP0/CPU0/0
  ipv4 address dhcp
 !
+interface GigabitEthernet0/0/0/0
+ shutdown
+!
 interface GigabitEthernet0/0/0/1
  ipv4 address 1.1.1.1 255.255.255.0
+ shutdown
 !
 interface GigabitEthernet0/0/0/2
  ipv4 address 1.1.1.1 255.255.255.0
+ shutdown
 !
 router static
  address-family ipv4 unicast
@@ -2133,27 +2229,33 @@ router static
 netconf-yang agent
  ssh
 !
+ssh server v2
 ssh server netconf vrf default
 end
 --------------------------------------- NetConf Reponse -------------------------------------
 
 !! IOS XR Configuration version = 7.0.1.05I
-!! Last configuration change at Fri Jun 15 20:54:21 2018 by lab
+!! Last configuration change at Sat Jun 16 01:33:50 2018 by lab
 !
 telnet vrf default ipv4 server max-servers 10
 username lab
  group root-lr
  group cisco-support
- secret 5 $1$ETat$bPFwbn5eLFtW//ZHx7orp0
+ secret 5 $1$NMdp$qJ0TNx9vAKRji7/1Ty5Cs1
 !
 interface MgmtEth0/RP0/CPU0/0
  ipv4 address dhcp
 !
+interface GigabitEthernet0/0/0/0
+ shutdown
+!
 interface GigabitEthernet0/0/0/1
  ipv4 address 1.1.1.1 255.255.255.0
+ shutdown
 !
 interface GigabitEthernet0/0/0/2
  ipv4 address 1.1.1.1 255.255.255.0
+ shutdown
 !
 router static
  address-family ipv4 unicast
@@ -2163,13 +2265,13 @@ router static
 netconf-yang agent
  ssh
 !
+ssh server v2
 ssh server netconf vrf default
 end
 FAIL: Status of configurations match.
 
------------------------------------------------ Yang Models --------------------------------
+---------------------------------------------Yang Models for CLI------------------------------
 http://openconfig.net/yang/interfaces
-http://openconfig.net/yang/lacp
 
----------------------------------------Mismatched Configurations----------------------------------
+----------------------------------------Uncovered Configurations----------------------------------
 hostname cisco

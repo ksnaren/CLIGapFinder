@@ -3,61 +3,46 @@
 This script helps in finding the CLI configs that do not have
 equivalent yang model(s) in either Cisco Native or Openconfig.
 
+Requirements:
+    1.Script requires ncclient library. 
+        Install using "pip install ncclient"        
+        Verify using "pip list | grep ncclient" 
+    
+    2.Script requires a router to be connected.  
+        Basic Config required on the router: telnet, management ip, netconf, ssh.
+        Verify using "ssh username@ip.address -p <netconf port> -s netconf" for ipv4 router.
+                           "ssh -6 username@ip.address -p <netconf port> -s netconf" for ipv6 router.
+        Example: "ssh lab@1.1.1.1 -p 830 -s netconf"
+      
 Script Usage: 
-"python cli_to_model_coverage_gap.py --host [<host address>] --netconfport [<NetConf Port>] 
+   "python cli_to_model_coverage_gap.py --host [<host address>] --netconfport [<NetConf Port>] 
    --telnetport [<Telnet Port>] --clifile [<CLI Configuration File>] --username [<login username>]
-   --password [<loging password>]  --models [<native | openconfig>] 
-   --ncclient_path [<ncclient library path>]".
+   --password [<loging password>]  --models [<native | openconfig>]".
 
 Input
     The input CLI Configuration to the script can be given in a file or  
     can be given interactively through the console. 
-    The CLI Config given in a file should also contain "commit".
     For interactive mode, remove the "--clifile" argument.
-
+    The CLI Config in a file/interactive should contain "commit" at the end.
+   
     The argument "models" takes either "native" or "openconfig" as its value.
     "native" identifies the corresponding model in Cisco Native Models and
     similarly for "openconfig".
     
 Output:
-    The Yang Models corresponding to the CLI configurations are displayed along with 
-    any missing configurations.     
+    The Yang Models corresponding to the CLI configurations along with 
+    any uncovered configurations are displayed.      
 
-    The file: model_log.xml contains the XML request related to the CLI config.  
-
-Script Requirements:
-    1.This script requires ncclient library. 
-        It can be cloned using "git clone https://github.com/ncclient/ncclient". 
-        The path to the library needs to be sent as the "--ncclient_path" argument.
+    File: model_log.xml contains the XML request related to the CLI config.
+    File: uncovered_cli.txt contains the CLI which doesnt have equivalent yang.
     
-    2. The router needs to have the basic configuration for script to work. 
-        Sample basic configuration is given below:                          
-            telnet vrf default ipv4 server max-servers 10
-            username lab
-            group root-lr
-            group cisco-support
-            secret 5 $1$ETat$bPFwbn5eLFtW//ZHx7orp0
-            !
-            interface MgmtEth0/RP0/CPU0/0
-            ipv4 address dhcp
-            !
-            router static
-            address-family ipv4 unicast
-            0.0.0.0/0 MgmtEth0/RP0/CPU0/0 192.168.122.1
-            !
-            netconf-yang agent
-            ssh
-            !
-            ssh server netconf vrf default
-            end    
-
-Working of the script can be categorized into 7 steps: 
-    1.The existing configuration on the router is retrieved using NetConf, 
+Working of the script: 
+    1.Existing configuration on the router is retrieved using Netconf, 
     2.CLI configurations are applied on the router using telnet and response of 
       show running-config is stored, 
-    3.Configuration is again retrieved using NetConf,
+    3.Configuration is again retrieved using Netconf,
     4.Router is reverted to the original configuration,
-    5.NETCONF Request (which contains just the XML related to CLI configurations) 
+    5.Netconf Request (which contains just the XML related to CLI configurations) 
       is sent and response of show running-config is stored, 
-    6.Router is reverted to original configuration.
-    7.Response obtained in 2,5 are validated.
+    6.Router is reverted to original configuration,
+    7.Response obtained in 2,5 is validated.

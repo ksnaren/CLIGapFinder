@@ -24,11 +24,24 @@
     </subinterfaces>
    </interface>
    <interface>
+    <name>GigabitEthernet0/0/0/0</name>
+    <config>
+     <name>GigabitEthernet0/0/0/0</name>
+     <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
+     <enabled>false</enabled>
+    </config>
+    <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
+     <config>
+      <auto-negotiate>false</auto-negotiate>
+     </config>
+    </ethernet>
+   </interface>
+   <interface>
     <name>GigabitEthernet0/0/0/1</name>
     <config>
      <name>GigabitEthernet0/0/0/1</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -57,7 +70,7 @@
     <config>
      <name>GigabitEthernet0/0/0/2</name>
      <type xmlns:idx="urn:ietf:params:xml:ns:yang:iana-if-type">idx:ethernetCsmacd</type>
-     <enabled>true</enabled>
+     <enabled>false</enabled>
     </config>
     <ethernet xmlns="http://openconfig.net/yang/interfaces/ethernet">
      <config>
@@ -82,28 +95,6 @@
     </subinterfaces>
    </interface>
   </interfaces>
-  <lacp xmlns="http://openconfig.net/yang/lacp">
-   <interfaces>
-    <interface>
-     <name>MgmtEth0/RP0/CPU0/0</name>
-     <config>
-      <name>MgmtEth0/RP0/CPU0/0</name>
-     </config>
-    </interface>
-    <interface>
-     <name>GigabitEthernet0/0/0/1</name>
-     <config>
-      <name>GigabitEthernet0/0/0/1</name>
-     </config>
-    </interface>
-    <interface>
-     <name>GigabitEthernet0/0/0/2</name>
-     <config>
-      <name>GigabitEthernet0/0/0/2</name>
-     </config>
-    </interface>
-   </interfaces>
-  </lacp>
  </config>
 </edit-config>
 </rpc>
